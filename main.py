@@ -57,11 +57,11 @@ class Main:
         self.scrollbar.config(command=self.listbox.yview)
         self.listbox.config(yscrollcommand=self.scrollbar.set)
 
-        self.root.mainloop()
         self.load()
+        self.root.mainloop()
 
     def every(self):
-        self.status['text'] = ''
+        self.status.config(text='')
         self.entry.delete(0, END)
         self.root.update()
 
@@ -113,11 +113,19 @@ class Main:
                 self.A = sorted(self.A)
                 for i in self.A:
                     self.listbox.insert(END, i)
-        except FileNotFoundError:
-            self.status['text'] = 'Ошибка. Не могу найти файл. Запуск.'
         except (InvalidToken, TypeError):
             self.save()
             self.load()
+            with open(self.filepath, 'r', encoding='UTF-8') as file:
+                self.listbox.delete(0, END)
+                for i in file:
+                    i.strip()
+                    self.A.append(i.replace('\n', '').replace('▓▓', '▓'))
+                self.A = sorted(self.A)
+                for i in self.A:
+                    self.listbox.insert(END, i)
+        except FileNotFoundError:
+            self.status['text'] = 'Ошибка. Не могу найти файл. Запуск.'
 
     def save(self):
         self.A = list(self.listbox.get(0, self.listbox.size()))
@@ -132,7 +140,6 @@ class Main:
     def close(self):
         self.save()
         self.every()
-        print('Выход...')
         raise SystemExit
 
 
