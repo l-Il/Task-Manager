@@ -9,7 +9,7 @@ class Main:
         self.A = []
         self.filepath = 'bd.txt'
         self.texture = r'textures.png'
-        self.style = ['#202020', '#ffffff', '#6a8759']
+        self.style = {'bg': '#202020', 'fg1': '#ffffff', 'fg2': '#6a8759'}
         try:
             self.key = open("key.key", "rb").read()
         except FileNotFoundError:
@@ -19,8 +19,9 @@ class Main:
         self.f = Fernet(self.key)
 
         self.root = Tk()
-        self.root.title("Password Manager")
-        self.root.configure(bg=self.style[0])
+        self.root.title("Task Manager")
+        self.root.resizable(False, False)
+        self.root.configure(bg=self.style['bg'])
 
         self.img_add = ImageTk.PhotoImage(Img.open(self.texture).crop((1, 1, 17, 17)))
         self.img_del = ImageTk.PhotoImage(Img.open(self.texture).crop((18, 1, 34, 17)))
@@ -28,29 +29,29 @@ class Main:
         self.img_exit = ImageTk.PhotoImage(Img.open(self.texture).crop((52, 1, 68, 17)))
         self.img_ent = ImageTk.PhotoImage(Img.open(self.texture).crop((69, 1, 85, 17)))
 
-        self.taskbar = Frame(bg=self.style[0])
+        self.taskbar = Frame(bg=self.style['bg'])
         self.taskbar.pack(side=LEFT, fill=Y)
-        Button(self.taskbar, text='Добавить', fg=self.style[1], image=self.img_add, compound="left", relief=FLAT, bg=self.style[0], command=self.add).pack(expand=1, anchor=NW)
-        Button(self.taskbar, text='Изменить', fg=self.style[1], image=self.img_chng, compound="left", relief=FLAT, bg=self.style[0], command=self.edit).pack(expand=1, anchor=NW)
-        Button(self.taskbar, text='Удалить', fg=self.style[1], image=self.img_del, compound="left", relief=FLAT, bg=self.style[0], command=self.delete).pack(expand=1, anchor=NW)
-        Button(self.taskbar, text='Выход', fg=self.style[1], image=self.img_exit, compound="left", relief=FLAT, bg=self.style[0], command=self.close).pack(expand=1, anchor=NW)
+        Button(self.taskbar, text='Добавить', fg=self.style['fg1'], image=self.img_add, compound="left", relief=FLAT, bg=self.style['bg'], command=self.add).pack(expand=1, anchor=NW)
+        Button(self.taskbar, text='Изменить', fg=self.style['fg1'], image=self.img_chng, compound="left", relief=FLAT, bg=self.style['bg'], command=self.edit).pack(expand=1, anchor=NW)
+        Button(self.taskbar, text='Удалить', fg=self.style['fg1'], image=self.img_del, compound="left", relief=FLAT, bg=self.style['bg'], command=self.delete).pack(expand=1, anchor=NW)
+        Button(self.taskbar, text='Выход', fg=self.style['fg1'], image=self.img_exit, compound="left", relief=FLAT, bg=self.style['bg'], command=self.close).pack(expand=1, anchor=NW)
 
-        self.toolbar = Frame(bg=self.style[0])
+        self.toolbar = Frame(bg=self.style['bg'])
         self.toolbar.pack(side=TOP, fill=X)
 
-        self.top_frame = Frame(self.toolbar, bg=self.style[0])
+        self.top_frame = Frame(self.toolbar, bg=self.style['bg'])
         self.top_frame.pack(side=TOP, fill=X)
-        self.status = Label(self.top_frame, fg=self.style[2], width=63, height=1, bg=self.style[0])
+        self.status = Label(self.top_frame, fg=self.style['fg2'], width=63, height=1, bg=self.style['bg'])
         self.status.pack(side=LEFT, fill=X)
         self.variable = IntVar()
-        self.send_btn = Button(self.top_frame, image=self.img_ent, relief=FLAT, bg=self.style[0], command=lambda: self.variable.set(1))
+        self.send_btn = Button(self.top_frame, image=self.img_ent, relief=FLAT, bg=self.style['bg'], command=lambda: self.variable.set(1))
         self.send_btn.pack(side=RIGHT)
-        self.entry = Entry(self.top_frame, fg=self.style[1], bg=self.style[0], relief=FLAT)
+        self.entry = Entry(self.top_frame, fg=self.style['fg1'], bg=self.style['bg'], relief=FLAT)
         self.entry.pack(side=RIGHT)
 
-        self.bottom_frame = Frame(self.toolbar, bg=self.style[0])
+        self.bottom_frame = Frame(self.toolbar, bg=self.style['bg'])
         self.bottom_frame.pack(side=TOP, fill=X)
-        self.listbox = Listbox(self.bottom_frame, fg=self.style[1], bg=self.style[0], width=96, height=10)
+        self.listbox = Listbox(self.bottom_frame, fg=self.style['fg1'], bg=self.style['bg'], width=96, height=10)
         self.listbox.pack(side=LEFT, fill=X, anchor='s')
         self.scrollbar = Scrollbar(self.bottom_frame)
         self.scrollbar.pack(side=RIGHT, fill=Y)
